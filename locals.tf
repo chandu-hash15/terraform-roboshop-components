@@ -9,7 +9,11 @@ locals {
   tg_port = "${var.Component}" == "frontend" ? 80 : 8080
   health_check_path = "${var.Component}" == "frontend" ? "/" : "/health"
   host_path = "${var.Component}" == "frontend" ? "${var.Project}-${var.Environment}.${var.domain_name}" : "${var.Component}.backend-alb-${var.Environment}"
-
+  private_subnet_ids = [
+        data.aws_ssm_parameter.private_subnet_1_id.value,
+        
+        data.aws_ssm_parameter.private_subnet_2_id.value
+    ]
   tags = {
 
         Project = var.Project

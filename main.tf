@@ -1,8 +1,8 @@
 resource "aws_instance" "component" {
   ami           = local.ami
   instance_type = var.instance_type
-  vpc_security_group_ids = [var.security_group_id]
-  subnet_id     = var.subnet_id
+  vpc_security_group_ids = [data.aws_ssm_parameter.sg_id.value]
+  subnet_id              = local.private_subnet_ids[0]
 
   
 
@@ -62,7 +62,7 @@ resource "aws_lb_target_group" "component" {
   name        = "${var.Component}-target-group"
   port        = local.tg_port
   protocol    = "HTTP"
-  vpc_id      = var.vpc_id
+  vpc_id      = local.vpc_id
   deregistration_delay = 60
 
   health_check {
@@ -90,7 +90,7 @@ resource "aws_lb_target_group" "component" {
 
   instance_type = "${var.instance_type}"
 
-  vpc_security_group_ids = [var.security_group_id]
+  vpc_security_group_ids = [data.aws_ssm_parameter.sg_id.value]
 
   tag_specifications {
     resource_type = "instance"
@@ -121,7 +121,7 @@ resource "aws_lb_target_group" "component" {
     version = aws_launch_template.component.latest_version
     
   }
-  vpc_zone_identifier       = [var.private_subnet_ids]
+  vpc_zone_identifier       = local.private_subnet_ids[0]
   target_group_arns = [aws_lb_target_group.component.arn]
 
    instance_refresh {
