@@ -121,7 +121,7 @@ resource "aws_lb_target_group" "component" {
     version = aws_launch_template.component.latest_version
     
   }
-  vpc_zone_identifier       = local.private_subnet_ids[0]
+  vpc_zone_identifier = toset(local.private_subnet_ids)
   target_group_arns = [aws_lb_target_group.component.arn]
 
    instance_refresh {
