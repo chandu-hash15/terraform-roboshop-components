@@ -25,5 +25,5 @@ variable "domain_name" {
 }
 
 variable "priority" {
- type = int
+ type = number
 }
