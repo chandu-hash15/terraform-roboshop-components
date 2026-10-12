@@ -23,3 +23,7 @@ variable "domain_name" {
   type = string
   
 }
+
+variable "priority" {
+ type = int
+}
